@@ -1,0 +1,10 @@
+{
+  "name": "@passionui/platform-api",
+  "version": "0.0.1",
+  "main": "index.ts",
+  "keywords": [
+    "@passionui/platform-api"
+  ],
+  "author": "@passionui",
+  "license": "ISC"
+}
