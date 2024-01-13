@@ -8,6 +8,7 @@ type RequestInfo = {
 
 export type AppInfo = {
   appId: string;
+  debug?: boolean;
   props: {[key: string]: string};
 };
 
