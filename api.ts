@@ -33,7 +33,7 @@ const request = (res: RequestInfo, callback: any) => {
 class Api {
   public startApp(info: AppInfo): Promise<boolean> {
     return new Promise(resolve => {
-      request({name: 'startApp', params: info}, (data: boolean) =>
+      request({name: 'startApp', params: [info]}, (data: boolean) =>
         resolve(data),
       );
     });
