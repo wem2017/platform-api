@@ -1,4 +1,8 @@
-import {NativeEventEmitter, NativeModules} from 'react-native';
+import {
+  DeviceEventEmitter,
+  NativeEventEmitter,
+  NativeModules,
+} from "react-native";
 
 type RequestInfo = {
   id?: number;
@@ -9,13 +13,13 @@ type RequestInfo = {
 export type AppInfo = {
   appId: string;
   debug?: boolean;
-  props: {[key: string]: string};
+  props: { [key: string]: string };
 };
 
 const callbackMap = new Map();
 const emitter = new NativeEventEmitter(NativeModules.AppModule);
 
-emitter.addListener('RESPONSE_MESSAGE', event => {
+emitter.addListener("RESPONSE_MESSAGE", (event) => {
   const callback = callbackMap.get(event.data.id);
   delete event.data.id;
   callback?.(event.data?.result);
@@ -27,36 +31,44 @@ const request = (res: RequestInfo, callback: any) => {
   if (callback) {
     callbackMap.set(id, callback);
   }
-  NativeModules.AppModule.request({...res, id});
+  NativeModules.AppModule.request({ ...res, id });
 };
 
 class Api {
+  constructor() {
+    DeviceEventEmitter.addListener("dismiss", (data) => {
+      this.dismiss(data);
+    });
+  }
+
   public startApp(info: AppInfo): Promise<boolean> {
-    return new Promise(resolve => {
-      request({name: 'startApp', params: [info]}, (data: boolean) =>
-        resolve(data),
+    return new Promise((resolve) => {
+      request({ name: "startApp", params: [info] }, (data: boolean) =>
+        resolve(data)
       );
     });
   }
 
   public dismiss(data: any): Promise<boolean> {
-    return new Promise(resolve => {
-      request({name: 'dismiss', params: [data]}, (data: any) => resolve(data));
+    return new Promise((resolve) => {
+      request({ name: "dismiss", params: [data] }, (data: any) =>
+        resolve(data)
+      );
     });
   }
 
   public setItem(key: string, value: string): Promise<boolean> {
-    return new Promise(resolve => {
-      request({name: 'setItem', params: [key, value]}, (data: boolean) =>
-        resolve(data),
+    return new Promise((resolve) => {
+      request({ name: "setItem", params: [key, value] }, (data: boolean) =>
+        resolve(data)
       );
     });
   }
 
   public getItem(key: string): Promise<string | undefined> {
-    return new Promise(resolve => {
-      request({name: 'getItem', params: [key]}, (data: string | undefined) =>
-        resolve(data),
+    return new Promise((resolve) => {
+      request({ name: "getItem", params: [key] }, (data: string | undefined) =>
+        resolve(data)
       );
     });
   }
