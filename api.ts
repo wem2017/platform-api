@@ -10,6 +10,34 @@ type RequestInfo = {
   params?: any;
 };
 
+type TransactionStatus = "successful" | "failed" | "pending";
+
+type PaymentInfo = {
+  serviceId: string;
+  appId: string;
+  amount: number;
+  currency: string;
+  metadata: any;
+};
+
+export interface Transaction {
+  id: string;
+  serviceId: string;
+  appId: string;
+  user: string;
+  total: number;
+  subTotal: number;
+  paidTotal: number;
+  discountTotal: number;
+  taxTotal: number;
+  currency: string;
+  status: TransactionStatus;
+  canceledAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  metadata: any;
+}
+
 export type AppInfo = {
   appId: string;
   debug?: boolean;
@@ -68,6 +96,14 @@ class Api {
   public getItem(key: string): Promise<string | undefined> {
     return new Promise((resolve) => {
       request({ name: "getItem", params: [key] }, (data: string | undefined) =>
+        resolve(data)
+      );
+    });
+  }
+
+  public requestPayment(data: PaymentInfo): Promise<Transaction> {
+    return new Promise((resolve) => {
+      request({ name: "requestPayment", params: [data] }, (data: Transaction) =>
         resolve(data)
       );
     });
