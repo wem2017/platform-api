@@ -85,6 +85,20 @@ class Api {
     });
   }
 
+  public dismissAll(): Promise<boolean> {
+    return new Promise((resolve) => {
+      request({ name: "dismissAll", params: [] }, (data: any) => resolve(data));
+    });
+  }
+
+  public goMainTab(name: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      request({ name: "goMainTab", params: [name] }, (data: any) =>
+        resolve(data)
+      );
+    });
+  }
+
   public setItem(key: string, value: string): Promise<boolean> {
     return new Promise((resolve) => {
       request({ name: "setItem", params: [key, value] }, (data: boolean) =>
@@ -97,6 +111,15 @@ class Api {
     return new Promise((resolve) => {
       request({ name: "getItem", params: [key] }, (data: string | undefined) =>
         resolve(data)
+      );
+    });
+  }
+
+  public removeItem(key: string): Promise<string | undefined> {
+    return new Promise((resolve) => {
+      request(
+        { name: "removeItem", params: [key] },
+        (data: string | undefined) => resolve(data)
       );
     });
   }
